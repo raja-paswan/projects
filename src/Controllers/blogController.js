@@ -46,7 +46,7 @@ const createBlog = async function (req, res) {
     }
 
     const savedData = await blogModel.create(data);
-    res.status(201).send({ msg: savedData });
+    res.status(201).send({ status:true,data: savedData });
   } catch (err) {
     return res.status(500).send({ status: false, err: err.message });
   }
@@ -66,7 +66,7 @@ const getBlogs = async function (req, res) {
     const { category, subcategory, tags,authorId } = data;
     if (authorId) {
       let verifyAuthorId = await blogModel.find({ authorId: authorId });
-      if (!verifyAuthorId) {
+      if (verifyAuthorId.length==0) {
         return res
           .status(400)
           .send({ status: false, msg: "No blogs in this AuthorId exist" });
@@ -74,7 +74,7 @@ const getBlogs = async function (req, res) {
     }
     if (category) {
       let verifyCategory = await blogModel.find({ category: category });
-      if (!verifyCategory) {
+      if (verifyCategory.length==0) {
         return res
           .status(400)
           .send({ status: false, msg: "No blogs in this category exist" });
@@ -83,7 +83,7 @@ const getBlogs = async function (req, res) {
 
     if (tags) {
       let verifyTags = await blogModel.find({ tags: tags });
-      if (!verifyTags) {
+      if (verifyTags.length==0) {
         return res
           .status(400)
           .send({ status: false, msg: "No blogs in this tags exist" });
@@ -237,12 +237,12 @@ const blogByQuery = async (req, res) => {
         .status(400)
         .send({ status: false, message: "No input provided" });
     }
-
-    const { authorId, category, subcategory, tags } = data;
+   
+    const {  category, subcategory, tags } = data;
 
     if (category) {
       let verifyCategory = await blogModel.find({ category: category });
-      if (!verifyCategory) {
+      if (verifyCategory.length==0) {
         return res
           .status(400)
           .send({ status: false, msg: "No blogs in this category exist" });
@@ -251,7 +251,7 @@ const blogByQuery = async (req, res) => {
 
     if (tags) {
       let verifytags = await blogModel.find({ tags: tags });
-      if (!verifytags) {
+      if (verifytags.length==0) {
         return res
           .status(400)
           .send({ status: false, msg: "no blog with this tags exist" });
@@ -263,15 +263,15 @@ const blogByQuery = async (req, res) => {
         subcategory: subcategory,
       });
 
-      if (!verifysubcategory) {
+      if (verifysubcategory.length==0) {
         return res
           .status(400)
           .send({ status: false, msg: "no blog with this subcategory exist" });
       }
     }
-
+      let authorid=req.token.authorId;
     let findBlog = await blogModel.find({
-      $and: [data, { isdeleted: false }, { authorId: authorId }],
+      $and: [data, { isdeleted: false },{authorid}],
     });
 
     if (!findBlog) {

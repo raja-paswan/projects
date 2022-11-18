@@ -98,8 +98,7 @@ const logInUser = async function (req, res) {
       { authorId: author._id.toString() },
       "this-is-my-Group7"
     );
-    res.setHeader("x-api-key", token);
-    return res.status(200).send({ status: true, msg: token });
+    return res.status(200).send({ status: true, data: {token}});
   } catch (err) {
     return res.status(500).send({ status: false, err: err.message });
   }

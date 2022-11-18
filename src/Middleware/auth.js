@@ -24,7 +24,7 @@ const authentication = function (req, res, next) {
     } catch (error) {
       {
         return res
-          .status(400)
+          .status(401)
           .send({ status: false, msg: "this is an invalid token" });
       }
     }
@@ -48,7 +48,7 @@ const authorization = function (req, res, next) {
     }
     if (req.token.authorId != authorId) {
       return res
-        .status(400)
+        .status(403)
         .send({ status: false, msg: "You are not Valid User" });
     }
     next();
