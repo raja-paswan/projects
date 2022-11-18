@@ -39,6 +39,13 @@ const authentication = function (req, res, next) {
 const authorization = function (req, res, next) {
   try {
     const authorId = req.query.authorId || req.body.authorId;
+    if (!authorId) {
+      {
+        return res
+          .status(400)
+          .send({ status: false, msg: "AuthorId is Required " });
+      }
+    }
     if (req.token.authorId != authorId) {
       return res
         .status(400)
