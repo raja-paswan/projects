@@ -6,10 +6,13 @@ const blockSchema = new mongoose.Schema({
 
     symbol: {
         type: String,
+        unique:true
     },
 
     name: {
         type: String,
+        unique:true
+
 
     },
     marketCapUsd: {
