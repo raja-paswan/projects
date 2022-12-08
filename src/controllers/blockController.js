@@ -12,8 +12,7 @@ const getBlockdata = async function (req, res) {
         }
         let result = await axios(options)
         console.log(result);
-        let resultData = result.data
-
+        let resultData = result.data  //data:{data[{}{}...100]}
         for (let i = 0; i < resultData.data.length; i++) {
             let data = {}
             data.symbol = resultData.data[i].symbol
